@@ -2,7 +2,7 @@ package com.shokhrukh.smartdelivery.service;
 
 import com.shokhrukh.smartdelivery.dto.*;
 import com.shokhrukh.smartdelivery.enums.Role;
-import com.shokhrukh.smartdelivery.model.User;
+import com.shokhrukh.smartdelivery.entity.User;
 import com.shokhrukh.smartdelivery.repository.UserRepository;
 import com.shokhrukh.smartdelivery.security.JwtService;
 import lombok.RequiredArgsConstructor;
