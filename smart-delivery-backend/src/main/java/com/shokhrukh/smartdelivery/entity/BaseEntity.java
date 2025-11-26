@@ -1,4 +1,4 @@
-package com.shokhrukh.smartdelivery.model;
+package com.shokhrukh.smartdelivery.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
