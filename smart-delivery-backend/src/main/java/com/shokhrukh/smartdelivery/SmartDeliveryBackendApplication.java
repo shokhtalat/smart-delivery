@@ -1,4 +1,4 @@
-package com.shokhrukh.smart_delivery;
+package com.shokhrukh.smartdelivery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

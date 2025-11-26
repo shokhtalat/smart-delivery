@@ -1,0 +1,10 @@
+/Users/shokhrukhtalatov/Documents/Projects/smart-delivery/smart-delivery-backend/src/main/java/com/shokhrukh/smartdelivery/SmartDeliveryBackendApplication.java
+/Users/shokhrukhtalatov/Documents/Projects/smart-delivery/smart-delivery-backend/src/main/java/com/shokhrukh/smartdelivery/enums/OrderStatus.java
+/Users/shokhrukhtalatov/Documents/Projects/smart-delivery/smart-delivery-backend/src/main/java/com/shokhrukh/smartdelivery/enums/Role.java
+/Users/shokhrukhtalatov/Documents/Projects/smart-delivery/smart-delivery-backend/src/main/java/com/shokhrukh/smartdelivery/model/BaseEntity.java
+/Users/shokhrukhtalatov/Documents/Projects/smart-delivery/smart-delivery-backend/src/main/java/com/shokhrukh/smartdelivery/model/Order.java
+/Users/shokhrukhtalatov/Documents/Projects/smart-delivery/smart-delivery-backend/src/main/java/com/shokhrukh/smartdelivery/model/OrderStatusHistory.java
+/Users/shokhrukhtalatov/Documents/Projects/smart-delivery/smart-delivery-backend/src/main/java/com/shokhrukh/smartdelivery/model/User.java
+/Users/shokhrukhtalatov/Documents/Projects/smart-delivery/smart-delivery-backend/src/main/java/com/shokhrukh/smartdelivery/repository/OrderRepository.java
+/Users/shokhrukhtalatov/Documents/Projects/smart-delivery/smart-delivery-backend/src/main/java/com/shokhrukh/smartdelivery/repository/OrderStatusHistoryRepository.java
+/Users/shokhrukhtalatov/Documents/Projects/smart-delivery/smart-delivery-backend/src/main/java/com/shokhrukh/smartdelivery/repository/UserRepository.java
