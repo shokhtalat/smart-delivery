@@ -9,5 +9,4 @@ public class SmartDeliveryBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SmartDeliveryBackendApplication.class, args);
 	}
-
 }
