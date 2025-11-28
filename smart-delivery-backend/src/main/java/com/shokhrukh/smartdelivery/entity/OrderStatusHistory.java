@@ -3,6 +3,7 @@ package com.shokhrukh.smartdelivery.entity;
 import com.shokhrukh.smartdelivery.enums.OrderStatus;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,5 +22,6 @@ public class OrderStatusHistory extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "changed_by_user_id")
-    private User changedBy;
+    private User changedByUser;
+
 }
