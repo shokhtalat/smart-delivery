@@ -29,7 +29,8 @@ public class OrderController {
 
     @GetMapping
     public List<OrderResponse> getOrders(Authentication auth) {
-        return auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(Role.RESTAURANT.name()))
+        auth.getAuthorities().forEach(a -> System.out.println("AUTHORITY: " + a.getAuthority()));
+        return auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_RESTAURANT"))
                 ? orderService.getOrdersForRestaurant(auth.getName())
                 : orderService.getOrdersForRider(auth.getName());
     }
