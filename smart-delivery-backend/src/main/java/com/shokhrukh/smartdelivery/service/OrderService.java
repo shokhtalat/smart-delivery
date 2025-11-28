@@ -53,6 +53,12 @@ public class OrderService {
                 .map(this::toResponse)
                 .toList();
     }
+    public List<OrderResponse> getAllOrders() {
+        return orderRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
 
     private OrderResponse toResponse(Order o) {
         return OrderResponse.builder()
