@@ -19,8 +19,11 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('RESTAURANT')")
     public OrderResponse createOrder(@RequestBody CreateOrderRequest request, Authentication auth) {
+        System.out.println("=== INSIDE CONTROLLER ===");
+        System.out.println("Authentication: " + auth);
+        System.out.println("Authorities: " + auth.getAuthorities());
+        System.out.println("========================");
         return orderService.createOrder(request, auth.getName());
     }
 

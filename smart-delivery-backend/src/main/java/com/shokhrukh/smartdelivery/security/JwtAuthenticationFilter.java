@@ -32,12 +32,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authHeader.substring(7);
+        String token = authHeader.replace("Bearer ", "");
         String email = jwtService.extractEmail(token);
+        System.out.println("EXTRACTED EMAIL = " + email);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            System.out.println("LOADED USER DETAILS FOR EMAIL = " + userDetails.getUsername());
+            System.out.println("AUTHORITIES = " + userDetails.getAuthorities()); // ADD THIS LINE
 
             var authToken = new UsernamePasswordAuthenticationToken(
                     userDetails,
@@ -45,6 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     userDetails.getAuthorities());
 
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            System.out.println("AUTHENTICATION SUCCESSFUL FOR EMAIL = " + authToken);
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 

@@ -20,7 +20,7 @@ public class OrderService {
     private final UserRepository userRepository;
 
     public OrderResponse createOrder(CreateOrderRequest request, String restaurantEmail) {
-
+        System.out.println("AUTH NAME = " + restaurantEmail);
         User restaurant = userRepository.findByEmail(restaurantEmail)
                 .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
 
@@ -30,6 +30,7 @@ public class OrderService {
         order.setDropoffAddress(request.getDropoffAddress());
         order.setNotes(request.getNotes());
         order.setStatus(OrderStatus.PENDING);
+        order.setRestaurant(restaurant);
 
         orderRepository.save(order);
 
