@@ -2,6 +2,7 @@ package com.shokhrukh.smartdelivery.service;
 
 import com.shokhrukh.smartdelivery.dto.CreateOrderRequest;
 import com.shokhrukh.smartdelivery.dto.OrderResponse;
+import com.shokhrukh.smartdelivery.dto.OrderStatusHistoryResponse;
 import com.shokhrukh.smartdelivery.entity.Order;
 import com.shokhrukh.smartdelivery.entity.OrderStatusHistory;
 import com.shokhrukh.smartdelivery.entity.User;
@@ -81,6 +82,86 @@ public class OrderService {
         return toResponse(order);
     }
 
+    @Transactional
+    public OrderResponse assignOrderToRider(String orderId, String riderEmail) {
+        Order order = orderRepository.findById(orderId).orElseThrow();
+        if (order.getStatus() != OrderStatus.PENDING) {
+            throw new IllegalStateException("Only PENDING orders can be assigned.");
+        }
+
+        User rider = userRepository.findByEmail(riderEmail).orElseThrow();
+
+        order.setRider(rider);
+        order.setStatus(OrderStatus.ACCEPTED);
+        orderRepository.save(order);
+
+        saveHistory(order, rider);
+
+        return toResponse(order);
+    }
+
+    @Transactional
+    public OrderResponse riderPickUp(String orderId, String riderEmail) {
+        Order order = orderRepository.findById(orderId).orElseThrow();
+
+        if (!order.getRider().getEmail().equals(riderEmail)) {
+            throw new IllegalStateException("This rider is not assigned.");
+        }
+
+        order.setStatus(OrderStatus.PICKED_UP);
+        orderRepository.save(order);
+
+        saveHistory(order, order.getRider());
+
+        return toResponse(order);
+    }
+
+    @Transactional
+    public OrderResponse riderDeliver(String orderId, String riderEmail) {
+        Order order = orderRepository.findById(orderId).orElseThrow();
+
+        if (!order.getRider().getEmail().equals(riderEmail)) {
+            throw new IllegalStateException("This rider is not assigned.");
+        }
+
+        order.setStatus(OrderStatus.DELIVERED);
+        orderRepository.save(order);
+
+        saveHistory(order, order.getRider());
+
+        return toResponse(order);
+    }
+
+    @Transactional
+    public OrderResponse cancelOrder(String orderId, String restaurantEmail) {
+        Order order = orderRepository.findById(orderId).orElseThrow();
+
+        if (!order.getRestaurant().getEmail().equals(restaurantEmail)) {
+            throw new IllegalStateException("This restaurant does not own the order.");
+        }
+
+        if (order.getStatus() != OrderStatus.PENDING) {
+            throw new IllegalStateException("Only PENDING orders can be canceled.");
+        }
+
+        order.setStatus(OrderStatus.CANCELED);
+        orderRepository.save(order);
+
+        saveHistory(order, order.getRestaurant());
+
+        return toResponse(order);
+    }
+
+    public List<OrderStatusHistoryResponse> getHistory(String orderId) {
+        return historyRepository.findByOrderOrderByCreatedAtAsc(orderId)
+                .stream()
+                .map(h -> new OrderStatusHistoryResponse(
+                        h.getStatus().name(),
+                        h.getChangedByUser().getName(),
+                        h.getCreatedAt()))
+                .toList();
+    }
+
     // ====Responses==========
     public List<OrderResponse> getOrdersForRestaurant(String email) {
         User restaurant = userRepository.findByEmail(email).orElseThrow();
@@ -117,6 +198,15 @@ public class OrderService {
                 .restaurantName(o.getRestaurant().getName())
                 .riderName(o.getRider() != null ? o.getRider().getName() : null)
                 .build();
+    }
+
+    private void saveHistory(Order order, User changedBy) {
+        OrderStatusHistory h = new OrderStatusHistory();
+        h.setOrder(order);
+        h.setStatus(order.getStatus());
+        h.setChangedByUser(changedBy);
+        h.setCreatedAt(LocalDateTime.now());
+        historyRepository.save(h);
     }
 
 }

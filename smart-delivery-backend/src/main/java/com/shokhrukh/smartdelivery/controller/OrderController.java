@@ -2,8 +2,8 @@ package com.shokhrukh.smartdelivery.controller;
 
 import com.shokhrukh.smartdelivery.dto.CreateOrderRequest;
 import com.shokhrukh.smartdelivery.dto.OrderResponse;
+import com.shokhrukh.smartdelivery.dto.OrderStatusHistoryResponse;
 import com.shokhrukh.smartdelivery.dto.UpdateStatusRequest;
-import com.shokhrukh.smartdelivery.enums.Role;
 import com.shokhrukh.smartdelivery.security.JwtService;
 import com.shokhrukh.smartdelivery.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +45,43 @@ public class OrderController {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_RESTAURANT"))
                         ? orderService.getOrdersForRestaurant(auth.getName())
                         : orderService.getOrdersForRider(auth.getName());
+    }
+
+    @PostMapping("/{id}/assign")
+    @PreAuthorize("hasAuthority('RIDER') == false") // only restaurant/admin
+    public OrderResponse assign(
+            @PathVariable String id,
+            Authentication auth) {
+        return orderService.assignOrderToRider(id, auth.getName());
+    }
+
+    @PostMapping("/{id}/picked-up")
+    @PreAuthorize("hasAuthority('RIDER')")
+    public OrderResponse pickedUp(
+            @PathVariable String id,
+            Authentication auth) {
+        return orderService.riderPickUp(id, auth.getName());
+    }
+
+    @PostMapping("/{id}/delivered")
+    @PreAuthorize("hasAuthority('RIDER')")
+    public OrderResponse delivered(
+            @PathVariable String id,
+            Authentication auth) {
+        return orderService.riderDeliver(id, auth.getName());
+    }
+
+    @PostMapping("/{id}/cancel")
+    @PreAuthorize("hasAuthority('RESTAURANT')")
+    public OrderResponse cancel(
+            @PathVariable String id,
+            Authentication auth) {
+        return orderService.cancelOrder(id, auth.getName());
+    }
+
+    @GetMapping("/{id}/history")
+    public List<OrderStatusHistoryResponse> history(@PathVariable String id) {
+        return orderService.getHistory(id);
     }
 
     @GetMapping("/all")
