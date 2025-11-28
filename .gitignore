@@ -1,1 +1,17 @@
 smart-delivery-app
+
+# Java/Spring
+target/
+*.jar
+
+# Flutter
+build/
+.dart_tool/
+
+# Node / NextJS
+node_modules/
+.next/
+dist/
+
+# OS junk
+.DS_Store
