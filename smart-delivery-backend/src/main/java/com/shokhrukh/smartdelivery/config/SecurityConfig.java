@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/webjars/**")
                         .permitAll()
-                        .requestMatchers("/orders/**").hasAuthority("ROLE_RESTAURANT")
+                        .requestMatchers("/orders/**").hasRole("RESTAURANT")
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
